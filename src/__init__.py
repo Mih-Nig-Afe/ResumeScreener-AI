@@ -1,1 +1,1 @@
-"""Resume screening package for Future Interns Task 3."""
+"""Resume screening package for ResumeScreener-AI."""

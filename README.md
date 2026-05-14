@@ -1,8 +1,8 @@
-# FUTURE_ML_03 - Resume / Candidate Screening System
+# ResumeScreener-AI
 
-Machine Learning Task 3 (2026) by Future Interns.
+**AI-Powered Resume Screening System with Intelligent Candidate Ranking**
 
-This project builds an end-to-end NLP resume screening system that:
+An end-to-end NLP-based resume screening system that:
 
 - parses resume text,
 - extracts skills,
@@ -24,13 +24,13 @@ Hiring teams review hundreds of resumes per role. This solution speeds up shortl
 - Candidate ranking
 - Skill-gap identification
 - Recruiter-facing Streamlit web UI
-- Direct ingestion and mapping of all required Task 3 Kaggle datasets
+- Direct ingestion and mapping of Kaggle datasets
 - Dockerized execution
 
 ## Project Structure
 
 ```text
-FUTURE_ML_03/
+ResumeScreener-AI/
   data/
     raw/
       resumes_sample.csv
@@ -41,7 +41,7 @@ FUTURE_ML_03/
   notebooks/
     resume_screening_demo.ipynb
   reports/
-    TASK3_REQUIREMENTS_STATUS.md
+    REQUIREMENTS_STATUS.md
   scripts/
     download_kaggle_datasets.sh
     ingest_kaggle_resume_dataset.sh
@@ -108,8 +108,8 @@ python -m src.run_pipeline \
 ### Option A: Docker
 
 ```bash
-docker build -t future-ml-task3 .
-docker run --rm -v "$(pwd)/data:/app/data" future-ml-task3
+docker build -t resumescreener-ai .
+docker run --rm -v "$(pwd)/data:/app/data" resumescreener-ai
 ```
 
 ### Option B: Docker Compose
@@ -118,14 +118,14 @@ docker run --rm -v "$(pwd)/data:/app/data" future-ml-task3
 docker compose up --build
 ```
 
-The default `resume-screening` service now runs with mapped Kaggle artifacts (not sample files).
+The default `resume-screening` service runs with mapped Kaggle artifacts.
 
-### Task 3 Kaggle Ingestion in Docker (All Required Datasets)
+### Kaggle Dataset Ingestion in Docker
 
-This runs the required dataset downloads and mapping inside Docker.
+This runs dataset downloads and mapping inside Docker.
 
 ```bash
-docker compose --profile kaggle run --rm task3-kaggle-ingestion
+docker compose --profile kaggle run --rm kaggle-ingestion
 ```
 
 Notes:
@@ -161,16 +161,16 @@ bash scripts/run_streamlit.sh
 The UI lets recruiters:
 
 - choose role profile,
-- select resume source (mapped Task 3 Kaggle data or uploaded CSV),
+- select resume source (mapped Kaggle data or uploaded CSV),
 - choose job description source (generated from mapped Kaggle jobs or manual/uploaded),
 - provide job description text,
 - run scoring and ranking,
 - inspect missing required skills per candidate,
 - download ranking and summary outputs.
 
-## Kaggle Ingestion (Direct, All Required Datasets)
+## Kaggle Dataset Ingestion
 
-This project directly ingests all required Task 3 datasets:
+This project directly ingests Kaggle datasets:
 
 - `snehaanbhawal/resume-dataset`
 - `ravindrasinghrana/job-description-dataset`
@@ -182,7 +182,7 @@ Mapped outputs used by the screening system:
 - `data/raw/job_descriptions_kaggle_mapped.csv`
 - `data/raw/job_description_generated_data_scientist.txt`
 
-Run one-command Task 3 ingestion:
+Run one-command ingestion:
 
 ```bash
 bash scripts/ingest_kaggle_resume_dataset.sh
@@ -211,7 +211,7 @@ bash scripts/download_kaggle_datasets.sh
 
 Datasets referenced:
 
-- Required command format from task prompt:
+- Resume dataset command:
 
 ```bash
 {#!/bin/bash
@@ -234,10 +234,10 @@ kaggle datasets download PromptCloudHQ/us-jobs-on-monstercom}
 
 ## End-to-End Docker Workflow
 
-1. Ingest and map required Kaggle datasets:
+1. Ingest and map Kaggle datasets:
 
 ```bash
-docker compose --profile kaggle run --rm task3-kaggle-ingestion
+docker compose --profile kaggle run --rm kaggle-ingestion
 ```
 
 1. Run scoring pipeline:
@@ -249,7 +249,7 @@ docker compose up --build resume-screening
 Or run locally on mapped Kaggle artifacts:
 
 ```bash
-bash scripts/run_task3_kaggle_pipeline.sh
+bash scripts/run_kaggle_pipeline.sh
 ```
 
 1. Launch recruiter UI:

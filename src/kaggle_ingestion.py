@@ -1,4 +1,4 @@
-"""Kaggle ingestion helpers for Future Interns ML Task 3 resume screening."""
+"""Kaggle ingestion helpers for ResumeScreener-AI resume screening."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ DEFAULT_RESUME_DATASET = "snehaanbhawal/resume-dataset"
 DEFAULT_JOB_DATASET = "ravindrasinghrana/job-description-dataset"
 DEFAULT_JOB_DESCRIPTION_DATASET = "PromptCloudHQ/us-jobs-on-monstercom"
 
-REQUIRED_TASK3_DATASETS: tuple[str, ...] = (
+REQUIRED_DATASETS: tuple[str, ...] = (
     DEFAULT_RESUME_DATASET,
     DEFAULT_JOB_DATASET,
     DEFAULT_JOB_DESCRIPTION_DATASET,
@@ -162,7 +162,7 @@ def _validate_kaggle_credentials() -> None:
 
 
 def download_kaggle_dataset(dataset_slug: str, download_dir: Path) -> Path:
-    """Download dataset archive using the Kaggle CLI command format required by Task 3."""
+    """Download dataset archive using the Kaggle CLI."""
     _validate_kaggle_credentials()
     download_dir.mkdir(parents=True, exist_ok=True)
 
@@ -530,7 +530,7 @@ def ingest_task3_required_datasets(
     role_key: str = "data_scientist",
     skip_download: bool = False,
 ) -> dict[str, str]:
-    """Ingest all required Task 3 datasets and produce normalized artifacts."""
+    """Ingest all required datasets and produce normalized artifacts."""
     resumes_path = ingest_resume_dataset_from_kaggle(
         dataset_slug=DEFAULT_RESUME_DATASET,
         download_dir=download_dir,
@@ -572,7 +572,7 @@ def ingest_task3_required_datasets(
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
-            "Ingest required Kaggle datasets for Task 3 and map them into screening-ready schemas."
+            "Ingest required Kaggle datasets and map them into screening-ready schemas."
         )
     )
 
@@ -580,7 +580,7 @@ def parse_args() -> argparse.Namespace:
         "--mode",
         choices=["resume", "jobs", "all"],
         default="all",
-        help="Ingestion mode: one resume dataset, one jobs dataset, or all required Task 3 datasets.",
+        help="Ingestion mode: one resume dataset, one jobs dataset, or all required datasets.",
     )
     parser.add_argument(
         "--dataset",
@@ -667,8 +667,8 @@ def main() -> None:
         skip_download=args.skip_download,
     )
 
-    print("Task 3 Kaggle ingestion completed for required datasets:")
-    for dataset_slug in REQUIRED_TASK3_DATASETS:
+    print("Kaggle ingestion completed for required datasets:")
+    for dataset_slug in REQUIRED_DATASETS:
         print(f"- {dataset_slug}")
     print(f"Mapped resumes: {artifacts['resumes']}")
     print(f"Mapped jobs: {artifacts['jobs']}")
