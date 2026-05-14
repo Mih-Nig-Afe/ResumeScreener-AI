@@ -1,0 +1,72 @@
+services:
+  task3-kaggle-ingestion:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: future_ml_task3_kaggle_ingestion
+    profiles:
+      - kaggle
+    volumes:
+      - ./data:/app/data
+      - ${HOME}/.kaggle:/root/.kaggle:ro
+    environment:
+      - KAGGLE_API_TOKEN=${KAGGLE_API_TOKEN:-}
+      - KAGGLE_USERNAME=${KAGGLE_USERNAME:-}
+      - KAGGLE_KEY=${KAGGLE_KEY:-}
+    command: ["bash", "scripts/ingest_kaggle_resume_dataset.sh"]
+
+  resume-screening:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: future_ml_task3_resume_screening
+    volumes:
+      - ./data:/app/data
+    command: ["bash", "scripts/run_task3_kaggle_pipeline.sh"]
+
+  resume-screening-sample:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: future_ml_task3_resume_screening_sample
+    profiles:
+      - sample
+    volumes:
+      - ./data:/app/data
+    command:
+      [
+        "python",
+        "-m",
+        "src.run_pipeline",
+        "--resumes",
+        "data/raw/resumes_sample.csv",
+        "--job",
+        "data/raw/job_description_data_scientist.txt",
+        "--role",
+        "data_scientist",
+        "--output",
+        "data/processed"
+      ]
+
+  recruiter-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: future_ml_task3_recruiter_ui
+    volumes:
+      - ./data:/app/data
+      - ${HOME}/.kaggle:/root/.kaggle:ro
+    environment:
+      - KAGGLE_API_TOKEN=${KAGGLE_API_TOKEN:-}
+      - KAGGLE_USERNAME=${KAGGLE_USERNAME:-}
+      - KAGGLE_KEY=${KAGGLE_KEY:-}
+    ports:
+      - "8501:8501"
+    command:
+      [
+        "streamlit",
+        "run",
+        "streamlit_app.py",
+        "--server.address=0.0.0.0",
+        "--server.port=8501"
+      ]

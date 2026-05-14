@@ -1,0 +1,71 @@
+[run]
+# Measure coverage for the src directory
+source = src
+
+# Omit test files and virtual environments from coverage
+omit =
+    */tests/*
+    */test_*.py
+    */__pycache__/*
+    */venv/*
+    */.venv/*
+    */env/*
+    */.env/*
+    */site-packages/*
+    */dist-packages/*
+
+# Enable branch coverage
+branch = True
+
+[report]
+# Set minimum coverage threshold to 85%
+fail_under = 85.0
+
+# Show missing lines in coverage report
+show_missing = True
+
+# Precision for coverage percentage
+precision = 2
+
+# Exclude lines from coverage
+exclude_lines =
+    # Standard pragma for excluding lines
+    pragma: no cover
+    
+    # Don't complain about missing debug-only code
+    def __repr__
+    
+    # Don't complain if tests don't hit defensive assertion code
+    raise AssertionError
+    raise NotImplementedError
+    
+    # Don't complain if non-runnable code isn't run
+    if __name__ == .__main__.:
+    
+    # Don't complain about abstract methods
+    @abstractmethod
+    @abc.abstractmethod
+    
+    # Don't complain about type checking blocks
+    if TYPE_CHECKING:
+    if typing.TYPE_CHECKING:
+    
+    # Don't complain about ellipsis in stubs
+    \.\.\.
+
+[html]
+# Directory for HTML coverage report
+directory = htmlcov
+
+# Title for HTML report
+title = ResumeScreener-AI Coverage Report
+
+[xml]
+# Output file for XML coverage report (for CI/CD)
+output = coverage.xml
+
+[json]
+# Output file for JSON coverage report
+output = coverage.json
+# Pretty print JSON output
+pretty_print = True
